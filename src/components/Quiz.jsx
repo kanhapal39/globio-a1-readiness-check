@@ -75,6 +75,7 @@ function Quiz({ question, passage, index, total, savedAnswer, onAnswer, onBack }
           <p lang="de">{passage.text}</p>
         </div>
       )}
+      {passage && <p className="scroll-hint">Long text? Scroll inside the box to read it all.</p>}
 
       <p className="question-text" lang="de">
         {question.question}

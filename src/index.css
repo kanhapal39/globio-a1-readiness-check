@@ -138,7 +138,7 @@ h3 {
   background: none;
   border: none;
   padding: 8px 0;
-  min-height: 44px;
+  min-height: 48px;
   font-family: inherit;
   font-size: 0.95rem;
   font-weight: 600;
@@ -250,6 +250,21 @@ h3 {
   /* Long texts scroll inside the card so the question stays visible. */
   max-height: 40vh;
   overflow-y: auto;
+  /* Scroll shadows: a soft shadow appears at the bottom (or top) edge only
+     while there is more text to scroll to. The white "covers" move with the
+     content (local) and hide the shadows when you reach the end. */
+  background:
+    linear-gradient(var(--color-card) 30%, transparent) top / 100% 40px no-repeat local,
+    linear-gradient(transparent, var(--color-card) 70%) bottom / 100% 40px no-repeat local,
+    radial-gradient(farthest-side at 50% 0, rgba(7, 27, 54, 0.18), transparent) top / 100% 14px no-repeat scroll,
+    radial-gradient(farthest-side at 50% 100%, rgba(7, 27, 54, 0.18), transparent) bottom / 100% 14px no-repeat scroll,
+    var(--color-card);
+}
+
+.scroll-hint {
+  margin: -12px 0 20px;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
 }
 
 .passage h2 {
@@ -341,6 +356,13 @@ h3 {
   color: var(--color-text-muted);
   font-size: 0.8rem;
   margin: 8px 0 0;
+}
+
+/* Touch screens have no keyboard shortcuts, so hide the hint there. */
+@media (hover: none) {
+  .keyboard-hint {
+    display: none;
+  }
 }
 
 /* ---------- Results ---------- */
@@ -543,6 +565,10 @@ h3 {
 .topic-tip {
   color: var(--color-text-muted);
   font-size: 0.9rem;
+}
+
+.topic p:last-child {
+  margin-bottom: 0;
 }
 
 .note {

@@ -38,10 +38,16 @@ function App() {
   const { screen, currentIndex, answers, startedAt, finishedAt } = state
 
   // Save on every change so a refresh doesn't lose progress.
-  useEffect(() => saveState(state), [state])
+  useEffect(() => {
+    saveState(state)
+  }, [state])
 
   // Start each new screen or question at the top (matters on phones).
-  useEffect(() => window.scrollTo(0, 0), [screen, currentIndex])
+  // (Braces matter: an effect must not return a value, and newer browsers
+  // return a Promise from scrollTo.)
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [screen, currentIndex])
 
   const hasSavedAttempt = startedAt !== null && finishedAt === null
 
