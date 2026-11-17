@@ -2,7 +2,7 @@
 
 A 15-question, 10-minute check that tells A1 German learners how ready they are for the Goethe / ÖSD exam, skill by skill, and the 2–3 topics to practise before booking.
 
-**Live demo:** _coming soon_ <!-- TODO: add deployed link -->
+**Live demo:** https://globio-a1-readiness-check.vercel.app
 
 ## Screenshots
 
