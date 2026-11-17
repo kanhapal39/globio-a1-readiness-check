@@ -28,7 +28,7 @@ After each answer the learner picks "Sure" or "Guessing".
 - Verdict: Ready = every skill ≥70% AND overall ≥75%. Almost = every skill ≥55% AND overall ≥60%. Otherwise Not yet.
 
 ## Results page
-Verdict banner + overall %, 3 skill bars with a 70% line, 2–3 topic cards (rank: wrong+sure topics first, then most points lost, grammar before vocabulary on ties), a note that listening/writing/speaking are not tested, buttons to review answers and retake.
+Verdict banner + overall %, 3 skill bars with a 70% line, 2–3 topic cards (rank: most wrong+sure answers first, then biggest share of points lost, then skill order grammar > reading > vocabulary, then topic id; if fewer than 2 topics lost points, fill to 2 with "polish" topics), a note that listening/writing/speaking are not tested, buttons to review answers and retake.
 
 ## Guardrails
 Never say "you will pass" — say "likely ready". Lean strict. Warn if finished in under 2 minutes or if most answers were marked "Guessing". Save progress in localStorage so a refresh doesn't lose it.

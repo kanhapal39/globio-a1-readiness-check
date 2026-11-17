@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "validate": "node src/lib/validateQuestions.js"
+    "validate": "node src/lib/validateQuestions.js",
+    "test": "node --test \"src/**/*.test.js\""
   },
   "dependencies": {
     "react": "^19.3.1",
