@@ -1,0 +1,208 @@
+{
+  "topics": {
+    "numbers_time": {
+      "label": "Numbers, days & time",
+      "tip": "Say the time out loud in German every hour for 5 days (\"halb neun\" = 8:30, not 9:30). Revise numbers 1-100 and the days of the week."
+    },
+    "daily_life": {
+      "label": "Everyday words",
+      "tip": "Make 10 flashcards a day for shops, places in town and family members. Test yourself German to English and English to German."
+    },
+    "articles": {
+      "label": "Articles (der/die/das, ein/einen)",
+      "tip": "Always learn a noun with its article. Write 10 sentences like \"Ich habe einen Bruder / eine Schwester / ein Auto\" to practise the accusative."
+    },
+    "verbs": {
+      "label": "Verb forms & word order",
+      "tip": "Conjugate sein, haben and 5 common verbs for ich/du/er/wir/sie every day. Write 5 sentences with separable verbs (aufstehen, einkaufen): the prefix goes to the end."
+    },
+    "reading_details": {
+      "label": "Reading: finding details",
+      "tip": "Read one short email or sign a day. Underline times, days, places and prices, then answer: who, when, where, what?"
+    },
+    "reading_main": {
+      "label": "Reading: the main idea",
+      "tip": "After each short text, say in one sentence why it was written: an invitation, information, or a request?"
+    }
+  },
+  "passages": {
+    "email": {
+      "title": "E-Mail",
+      "text": "Hallo Priya,\n\nam Samstag mache ich eine Party. Sie beginnt um 19 Uhr. Kannst du kommen? Bitte bring einen Salat mit. Getränke habe ich schon. Meine Adresse ist Bergstraße 12. Nimm den Bus Nummer 5.\n\nViele Grüße\nLukas"
+    },
+    "notice": {
+      "title": "Aushang",
+      "text": "Stadtbibliothek – Neue Öffnungszeiten\n\nMontag bis Freitag: 10 – 18 Uhr\nSamstag: 10 – 14 Uhr\nSonntag: geschlossen\n\nAb 1. März können Sie Ihre Bücher auch online verlängern."
+    }
+  },
+  "questions": [
+    {
+      "id": "v1",
+      "skill": "vocabulary",
+      "topic": "numbers_time",
+      "difficulty": 1,
+      "question": "Which number is „siebzehn“?",
+      "options": ["7", "70", "17", "27"],
+      "correctIndex": 2,
+      "explanation": "sieben = 7, siebzehn = 17, siebzig = 70."
+    },
+    {
+      "id": "v2",
+      "skill": "vocabulary",
+      "topic": "numbers_time",
+      "difficulty": 2,
+      "question": "„Der Kurs beginnt um halb neun.“ When does the course start?",
+      "options": ["9:30", "8:30", "9:00", "8:00"],
+      "correctIndex": 1,
+      "explanation": "„halb neun“ means half an hour before nine, so 8:30. English speakers often think 9:30."
+    },
+    {
+      "id": "v3",
+      "skill": "vocabulary",
+      "topic": "daily_life",
+      "difficulty": 1,
+      "question": "Ich kaufe Brot in der ___.",
+      "options": ["Apotheke", "Bank", "Post", "Bäckerei"],
+      "correctIndex": 3,
+      "explanation": "Die Bäckerei is the bakery. Die Apotheke is a pharmacy."
+    },
+    {
+      "id": "v4",
+      "skill": "vocabulary",
+      "topic": "daily_life",
+      "difficulty": 1,
+      "question": "Die Mutter von meiner Mutter ist meine ___.",
+      "options": ["Großmutter", "Tante", "Schwester", "Tochter"],
+      "correctIndex": 0,
+      "explanation": "Your mother's mother is your Großmutter (Oma)."
+    },
+    {
+      "id": "v5",
+      "skill": "vocabulary",
+      "topic": "daily_life",
+      "difficulty": 2,
+      "question": "Ich bin krank. Ich gehe zum ___.",
+      "options": ["Bahnhof", "Arzt", "Supermarkt", "Kino"],
+      "correctIndex": 1,
+      "explanation": "When you are ill (krank), you go to the doctor: zum Arzt."
+    },
+    {
+      "id": "g1",
+      "skill": "grammar",
+      "topic": "articles",
+      "difficulty": 1,
+      "question": "___ Tisch ist groß.",
+      "options": ["Die", "Das", "Der", "Den"],
+      "correctIndex": 2,
+      "explanation": "Tisch is masculine: der Tisch. As the subject it stays der."
+    },
+    {
+      "id": "g2",
+      "skill": "grammar",
+      "topic": "articles",
+      "difficulty": 2,
+      "question": "Ich habe ___ Bruder und eine Schwester.",
+      "options": ["ein", "eine", "einem", "einen"],
+      "correctIndex": 3,
+      "explanation": "After „haben“ we use the accusative. Masculine ein becomes einen: einen Bruder."
+    },
+    {
+      "id": "g3",
+      "skill": "grammar",
+      "topic": "verbs",
+      "difficulty": 1,
+      "question": "Wir ___ aus Indien.",
+      "options": ["kommen", "kommt", "kommst", "komme"],
+      "correctIndex": 0,
+      "explanation": "With wir the verb ends in -en: wir kommen."
+    },
+    {
+      "id": "g4",
+      "skill": "grammar",
+      "topic": "verbs",
+      "difficulty": 1,
+      "question": "___ du Hunger?",
+      "options": ["Habt", "Hast", "Hat", "Haben"],
+      "correctIndex": 1,
+      "explanation": "haben with du is hast: Hast du Hunger?"
+    },
+    {
+      "id": "g5",
+      "skill": "grammar",
+      "topic": "verbs",
+      "difficulty": 2,
+      "question": "Choose the correct sentence (aufstehen = to get up):",
+      "options": [
+        "Ich aufstehe um 7 Uhr.",
+        "Ich stehe auf um 7 Uhr.",
+        "Ich stehe um 7 Uhr auf.",
+        "Ich um 7 Uhr aufstehe."
+      ],
+      "correctIndex": 2,
+      "explanation": "Separable verb: the verb is in position 2 and the prefix „auf“ goes to the very end."
+    },
+    {
+      "id": "r1",
+      "skill": "reading",
+      "topic": "reading_details",
+      "difficulty": 1,
+      "passageId": "email",
+      "question": "Wann ist die Party?",
+      "options": ["Am Sonntag um 19 Uhr", "Am Samstag um 19 Uhr", "Am Samstag um 9 Uhr"],
+      "correctIndex": 1,
+      "explanation": "„am Samstag … Sie beginnt um 19 Uhr.“"
+    },
+    {
+      "id": "r2",
+      "skill": "reading",
+      "topic": "reading_details",
+      "difficulty": 1,
+      "passageId": "email",
+      "question": "Was soll Priya mitbringen?",
+      "options": ["Getränke", "einen Kuchen", "einen Salat"],
+      "correctIndex": 2,
+      "explanation": "„Bitte bring einen Salat mit. Getränke habe ich schon.“"
+    },
+    {
+      "id": "r3",
+      "skill": "reading",
+      "topic": "reading_main",
+      "difficulty": 2,
+      "passageId": "email",
+      "question": "Warum schreibt Lukas?",
+      "options": [
+        "Er hat Geburtstag.",
+        "Er sucht eine Wohnung.",
+        "Er lädt Priya zu einer Party ein."
+      ],
+      "correctIndex": 2,
+      "explanation": "Lukas invites Priya to his party. The email never says it is his birthday."
+    },
+    {
+      "id": "r4",
+      "skill": "reading",
+      "topic": "reading_details",
+      "difficulty": 2,
+      "passageId": "notice",
+      "question": "Sie möchten am Samstag um 15 Uhr ein Buch holen. Geht das?",
+      "options": [
+        "Ja, kein Problem.",
+        "Nein, die Bibliothek ist dann geschlossen.",
+        "Nein, das geht nur online."
+      ],
+      "correctIndex": 1,
+      "explanation": "On Saturday the library is open only from 10 to 14 Uhr, so at 15 Uhr it is closed."
+    },
+    {
+      "id": "r5",
+      "skill": "reading",
+      "topic": "reading_main",
+      "difficulty": 1,
+      "passageId": "notice",
+      "question": "Was ist dieser Text?",
+      "options": ["Eine Einladung", "Werbung für ein Buch", "Information über Öffnungszeiten"],
+      "correctIndex": 2,
+      "explanation": "The notice tells you the library's new opening hours (Öffnungszeiten)."
+    }
+  ]
+}
