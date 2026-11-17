@@ -143,7 +143,7 @@ function Results({ result, onReview, onRetake }) {
           Review my answers
         </button>
         <button className="btn btn-secondary btn-block" onClick={onRetake}>
-          Retake the check
+          Retake the test
         </button>
       </div>
 
