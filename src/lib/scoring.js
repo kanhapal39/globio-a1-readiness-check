@@ -86,6 +86,15 @@ export function getVerdict(skillScores) {
   return { level, overall, weakestSkill }
 }
 
+// WHY: the results page colours each skill bar by how close it is to the
+// "ready" line. Uses the same thresholds as the verdict, on the raw percent,
+// so a bar and the verdict can never disagree.
+export function getSkillStatus(percent) {
+  if (percent >= READY_SKILL) return 'good'
+  if (percent >= ALMOST_SKILL) return 'close'
+  return 'low'
+}
+
 // WHY: totals per topic are what the topic ranking is built on.
 // Each topic belongs to one skill (taken from its questions).
 function scoreTopics(questions, answers) {
@@ -98,9 +107,15 @@ function scoreTopics(questions, answers) {
       earned: 0,
       max: 0,
       misconceptions: 0,
+      total: 0, // number of questions in this topic
+      wrong: 0, // answered wrong (or not answered)
+      guessed: 0, // answered right, but marked "Guessing"
     })
     t.earned += s.points
     t.max += s.maxPoints
+    t.total += 1
+    if (!s.isCorrect) t.wrong += 1
+    if (s.isCorrect && answers[question.id]?.confidence === 'guessing') t.guessed += 1
     if (s.misconception) t.misconceptions += 1
   }
 
@@ -147,6 +162,9 @@ export function getWeakTopics(questions, answers, topics) {
     tip: topics[t.topicId]?.tip ?? '',
     lost: t.lost,
     misconceptions: t.misconceptions,
+    total: t.total,
+    wrong: t.wrong,
+    guessed: t.guessed,
     type: t.type,
   }))
 }
@@ -162,7 +180,7 @@ export function getWarnings(answers, durationMs) {
     warnings.push({
       code: 'rushed',
       message:
-        'You finished in under 2 minutes. If you rushed, your result may not be accurate. Try again slowly.',
+        'You finished in under 2 minutes. If you rushed, this result may not show your real level. Try again slowly.',
     })
   }
 
@@ -170,7 +188,7 @@ export function getWarnings(answers, durationMs) {
     warnings.push({
       code: 'mostlyGuessing',
       message:
-        'You marked most of your answers as "Guessing". Your real level is hard to measure. Review these topics before you book the exam.',
+        `You marked ${guesses} of ${given.length} answers as guesses, so this result may be lower than your real level.`,
     })
   }
 

@@ -343,14 +343,302 @@ h3 {
   margin: 8px 0 0;
 }
 
-/* ---------- Results placeholder ---------- */
+/* ---------- Results ---------- */
 
-.result-json {
+:root {
+  /* Status colours. Backgrounds are light tints and text stays dark navy,
+     so contrast is well above WCAG AA (4.5:1). */
+  --color-good: #1f9d5c;
+  --color-good-bg: #e3f6ec;
+  --color-close: #ffc233; /* Globio yellow */
+  --color-close-bg: #fff4d6;
+  --color-low: #f0826d; /* soft coral, not harsh red */
+  --color-low-bg: #ffebe6;
+}
+
+.verdict {
+  border-radius: var(--radius-lg);
+  border-left: 8px solid;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.verdict h1 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.verdict-score {
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+
+.verdict-percent {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.verdict-text {
+  margin: 0;
+}
+
+.verdict-ready {
+  background: var(--color-good-bg);
+  border-color: var(--color-good);
+}
+
+.verdict-almost {
+  background: var(--color-close-bg);
+  border-color: var(--color-close);
+}
+
+.verdict-notYet {
+  background: var(--color-low-bg);
+  border-color: var(--color-low);
+}
+
+.notice {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
   background: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  padding: 12px;
-  font-size: 0.75rem;
-  overflow-x: auto;
-  max-height: 60vh;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+
+.notice p {
+  margin: 0;
+}
+
+.notice-icon {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-text);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-title {
+  font-size: 1.15rem;
+  margin: 28px 0 12px;
+}
+
+.skills {
+  display: grid;
+  gap: 18px;
+}
+
+/* Label row above the bars; same width as the bars so 70% lines up. */
+.bar-scale {
+  position: relative;
+  height: 16px;
+  margin-bottom: -10px;
+}
+
+.bar-scale span {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.skill-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.skill-name {
+  font-weight: 600;
+}
+
+.skill-value {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.weakest-tag {
+  margin-left: 8px;
+  background: var(--color-text);
+  color: #fff;
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.7rem;
+  vertical-align: middle;
+}
+
+.bar {
+  position: relative;
+  height: 14px;
+  background: var(--color-border);
+  border-radius: 999px;
+}
+
+.skill-weakest .bar {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.bar-good {
+  background: var(--color-good);
+}
+
+.bar-close {
+  background: var(--color-close);
+}
+
+.bar-low {
+  background: var(--color-low);
+}
+
+.bar-marker {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  background: var(--color-text);
+}
+
+.topic {
+  margin-bottom: 12px;
+  border-left: 6px solid var(--color-primary);
+}
+
+.topic-polish {
+  border-left-color: var(--color-good);
+}
+
+.topic h3 {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.topic p {
+  margin: 0 0 8px;
+}
+
+.topic-what {
+  font-weight: 500;
+}
+
+.topic-tip {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.note {
+  margin: 24px 0;
+  font-size: 0.9rem;
+  background: #eef0ff;
+}
+
+/* ---------- Review ---------- */
+
+.review h1 {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.review-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: grid;
+  gap: 12px;
+}
+
+.review-item {
+  border-left: 6px solid var(--color-good);
+}
+
+.review-item.is-wrong {
+  border-left-color: var(--color-low);
+}
+
+.review-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.review-num {
+  color: var(--color-text-muted);
+}
+
+/* Dark text on light tints: readable, and ✓/✗ + words, not colour alone. */
+.review-mark {
+  border-radius: 999px;
+  padding: 0 10px;
+}
+
+.mark-right {
+  background: var(--color-good-bg);
+  color: #12603a;
+}
+
+.mark-wrong {
+  background: var(--color-low-bg);
+  color: #a3321d;
+}
+
+.review-passage {
+  margin: 0 0 4px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.review-question {
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.review-answers {
+  margin: 0 0 10px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  font-size: 0.95rem;
+}
+
+.review-answers dt {
+  color: var(--color-text-muted);
+}
+
+.review-answers dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+.review-confidence {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.review-explanation {
+  margin: 0;
+  font-size: 0.9rem;
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  padding: 10px 12px;
 }

@@ -4,12 +4,14 @@ import { getResult } from './lib/scoring.js'
 import { loadState, saveState } from './lib/storage.js'
 import Landing from './components/Landing.jsx'
 import Quiz from './components/Quiz.jsx'
+import Results from './components/Results.jsx'
+import Review from './components/Review.jsx'
 
 const { questions, passages } = data
 
 // A fresh attempt. finishedAt is set when the last question is answered.
 const EMPTY_STATE = {
-  screen: 'landing', // "landing" | "quiz" | "results"
+  screen: 'landing', // "landing" | "quiz" | "results" | "review"
   currentIndex: 0,
   answers: {}, // { [questionId]: { selectedIndex, confidence } }
   startedAt: null,
@@ -17,7 +19,8 @@ const EMPTY_STATE = {
 }
 
 // Restore saved progress. An unfinished attempt opens on the landing page,
-// which then offers "Continue where you left off".
+// which then offers "Continue where you left off". Results and review
+// screens are restored as they were.
 function getInitialState() {
   const saved = loadState()
   if (!saved || !(saved.currentIndex >= 0 && saved.currentIndex < questions.length)) {
@@ -25,6 +28,8 @@ function getInitialState() {
   }
   const state = { ...EMPTY_STATE, ...saved }
   if (state.screen === 'quiz') state.screen = 'landing'
+  // Results need a finished attempt; otherwise start from the landing page.
+  if (state.finishedAt === null && state.screen !== 'quiz') state.screen = 'landing'
   return state
 }
 
@@ -34,6 +39,9 @@ function App() {
 
   // Save on every change so a refresh doesn't lose progress.
   useEffect(() => saveState(state), [state])
+
+  // Start each new screen or question at the top (matters on phones).
+  useEffect(() => window.scrollTo(0, 0), [screen, currentIndex])
 
   const hasSavedAttempt = startedAt !== null && finishedAt === null
 
@@ -56,14 +64,18 @@ function App() {
     })
   }
 
+  function showScreen(name) {
+    setState((s) => ({ ...s, screen: name }))
+  }
+
   function goBack() {
     setState((s) => ({ ...s, currentIndex: Math.max(0, s.currentIndex - 1) }))
   }
 
   // All scoring happens in src/lib/scoring.js; App only passes the data in.
   const result = useMemo(
-    () => (screen === 'results' ? getResult(data, answers, finishedAt - startedAt) : null),
-    [screen, answers, finishedAt, startedAt],
+    () => (finishedAt !== null ? getResult(data, answers, finishedAt - startedAt) : null),
+    [answers, finishedAt, startedAt],
   )
 
   const question = questions[currentIndex]
@@ -97,15 +109,12 @@ function App() {
           />
         )}
 
-        {/* Placeholder until the real results page is built. */}
         {screen === 'results' && result && (
-          <section>
-            <h1>Result: {result.verdict.level}</h1>
-            <pre className="result-json">{JSON.stringify(result, null, 2)}</pre>
-            <button className="btn btn-primary btn-block" onClick={startOver}>
-              Retake the check
-            </button>
-          </section>
+          <Results result={result} onReview={() => showScreen('review')} onRetake={startOver} />
+        )}
+
+        {screen === 'review' && result && (
+          <Review data={data} review={result.review} onBack={() => showScreen('results')} />
         )}
       </main>
 

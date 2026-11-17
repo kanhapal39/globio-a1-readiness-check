@@ -3,7 +3,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { getResult } from './scoring.js'
+import { getResult, getSkillStatus } from './scoring.js'
 
 const data = JSON.parse(readFileSync(new URL('../data/questions.json', import.meta.url), 'utf8'))
 const { questions } = data
@@ -78,4 +78,17 @@ test('same answers twice -> identical weak topics (deterministic)', () => {
 test('duration 60s -> rushed warning', () => {
   const r = getResult(data, allRight('sure'), 60 * 1000)
   assert.ok(r.warnings.some((w) => w.code === 'rushed'))
+})
+
+test('weak topics report wrong/guessed counts; skill status bands', () => {
+  const answers = allRight('sure')
+  answers.g1 = wrong('g1', 'sure')
+  answers.g2 = wrong('g2')
+  const articles = getResult(data, answers, FIVE_MINUTES).weakTopics.find((t) => t.topicId === 'articles')
+  assert.equal(articles.wrong, 2)
+  assert.equal(articles.total, 2)
+  assert.equal(articles.misconceptions, 1)
+  assert.equal(getSkillStatus(70), 'good')
+  assert.equal(getSkillStatus(69.9), 'close')
+  assert.equal(getSkillStatus(54.9), 'low')
 })
