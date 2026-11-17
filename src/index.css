@@ -151,6 +151,12 @@ h3 {
   outline-offset: 2px;
 }
 
+/* Headings get focus from code (so screen readers read the new question),
+   not from the user, so they don't need a focus ring. */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
 /* ---------- Landing ---------- */
 
 .landing h1 {
@@ -667,4 +673,53 @@ h3 {
   background: var(--color-bg);
   border-radius: var(--radius);
   padding: 10px 12px;
+}
+
+/* ---------- "How is this calculated?" ---------- */
+
+.explainer {
+  margin-top: 24px;
+  padding: 0;
+}
+
+.explainer summary {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 12px 20px;
+  font-weight: 600;
+  color: var(--color-primary);
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+}
+
+.explainer[open] summary {
+  border-bottom: 1px solid var(--color-border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.explainer > :not(summary) {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.explainer h3 {
+  font-size: 1rem;
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+
+.explainer p,
+.explainer ul {
+  font-size: 0.9rem;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.explainer ul {
+  padding-left: 20px;
+}
+
+.explainer > :last-child {
+  margin-bottom: 20px;
 }

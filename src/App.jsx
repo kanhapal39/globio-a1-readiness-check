@@ -104,7 +104,6 @@ function App() {
 
         {screen === 'quiz' && (
           <Quiz
-            key={question.id}
             question={question}
             passage={question.passageId ? passages[question.passageId] : null}
             index={currentIndex}

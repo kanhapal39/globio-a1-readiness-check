@@ -6,9 +6,52 @@ const SKILL_LABELS = { vocabulary: 'Vocabulary', grammar: 'Grammar', reading: 'R
 // registered before the next question appears.
 const ADVANCE_DELAY_MS = 200
 
-// One question per screen. App remounts this component for every question
-// (key = question id), so local state starts fresh each time.
+// The quiz screen: progress at the top, then the current question.
+// The progress part stays on screen between questions, so screen readers
+// announce "Question X of 15" each time it changes (aria-live).
 function Quiz({ question, passage, index, total, savedAnswer, onAnswer, onBack }) {
+  const progress = ((index + 1) / total) * 100
+
+  return (
+    <section className="quiz">
+      <div className="quiz-top">
+        <div className="quiz-meta">
+          <span className="count" aria-live="polite">
+            Question {index + 1} of {total}
+          </span>
+          <span className="skill-tag">{SKILL_LABELS[question.skill]}</span>
+        </div>
+        <div
+          className="progress"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={total}
+          aria-valuenow={index + 1}
+          aria-label="Progress"
+        >
+          <div className="progress-fill" style={{ width: `${progress}%` }} />
+        </div>
+      </div>
+
+      {/* key = question id: a fresh Question (and fresh local state) for every question */}
+      <Question
+        key={question.id}
+        question={question}
+        passage={passage}
+        savedAnswer={savedAnswer}
+        onAnswer={onAnswer}
+      />
+
+      {index > 0 && (
+        <button className="link-btn" onClick={onBack}>
+          ← Back
+        </button>
+      )}
+    </section>
+  )
+}
+
+function Question({ question, passage, savedAnswer, onAnswer }) {
   // Start with the previous selection when the learner comes back to a question.
   const [selected, setSelected] = useState(savedAnswer?.selectedIndex ?? null)
   const [confidence, setConfidence] = useState(null)
@@ -17,6 +60,13 @@ function Quiz({ question, passage, index, total, savedAnswer, onAnswer, onBack }
   const lockedRef = useRef(false)
   const timerRef = useRef(null)
   useEffect(() => () => clearTimeout(timerRef.current), [])
+
+  // Move keyboard / screen-reader focus to the new question's heading.
+  // preventScroll: the page already scrolls to the top on each question.
+  const headingRef = useRef(null)
+  useEffect(() => {
+    headingRef.current?.focus({ preventScroll: true })
+  }, [])
 
   function selectOption(i) {
     if (lockedRef.current) return
@@ -46,29 +96,8 @@ function Quiz({ question, passage, index, total, savedAnswer, onAnswer, onBack }
     return () => window.removeEventListener('keydown', onKeyDown)
   })
 
-  const progress = ((index + 1) / total) * 100
-
   return (
-    <section className="quiz">
-      <div className="quiz-top">
-        <div className="quiz-meta">
-          <span className="count">
-            Question {index + 1} of {total}
-          </span>
-          <span className="skill-tag">{SKILL_LABELS[question.skill]}</span>
-        </div>
-        <div
-          className="progress"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={total}
-          aria-valuenow={index + 1}
-          aria-label="Progress"
-        >
-          <div className="progress-fill" style={{ width: `${progress}%` }} />
-        </div>
-      </div>
-
+    <>
       {passage && (
         <div className="card passage" tabIndex={0} aria-label={`Text: ${passage.title}`}>
           <h2>{passage.title}</h2>
@@ -77,11 +106,11 @@ function Quiz({ question, passage, index, total, savedAnswer, onAnswer, onBack }
       )}
       {passage && <p className="scroll-hint">Long text? Scroll inside the box to read it all.</p>}
 
-      <p className="question-text" lang="de">
+      <h1 className="question-text" lang="de" tabIndex={-1} ref={headingRef}>
         {question.question}
-      </p>
+      </h1>
 
-      <div className="options">
+      <div className="options" role="group" aria-label="Answer options">
         {question.options.map((option, i) => (
           <button
             key={i}
@@ -99,8 +128,8 @@ function Quiz({ question, passage, index, total, savedAnswer, onAnswer, onBack }
       </div>
 
       {selected !== null && (
-        <div className="confidence">
-          <p>How sure are you?</p>
+        <div className="confidence" role="group" aria-labelledby="confidence-label">
+          <p id="confidence-label">How sure are you?</p>
           <div className="confidence-buttons">
             <button
               className="btn btn-primary"
@@ -117,16 +146,12 @@ function Quiz({ question, passage, index, total, savedAnswer, onAnswer, onBack }
               I'm guessing
             </button>
           </div>
-          <p className="keyboard-hint">Keyboard: 1–{question.options.length} to choose, S = sure, G = guessing</p>
+          <p className="keyboard-hint">
+            Keyboard: 1–{question.options.length} to choose, S = sure, G = guessing
+          </p>
         </div>
       )}
-
-      {index > 0 && (
-        <button className="link-btn" onClick={onBack}>
-          ← Back
-        </button>
-      )}
-    </section>
+    </>
   )
 }
 

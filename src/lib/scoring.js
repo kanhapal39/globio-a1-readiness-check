@@ -15,6 +15,11 @@ export const GUESS_CREDIT = 0.5 // a correct guess earns half a point
 export const MEDIUM_WEIGHT = 1.5 // medium questions count 1.5x an easy one
 export const RUSHED_MS = 2 * 60 * 1000 // finishing faster than 2 minutes is suspicious
 export const MOSTLY_GUESSING = 0.5 // warn when MORE than this share of answers are guesses
+export const BORDERLINE_MARGIN = 5 // within this many points of a threshold = "close to the line"
+
+// Not used for scoring, only for the explanation on the results page:
+// the real A1 exams (Goethe / ÖSD) are passed with about 60%.
+export const EXAM_PASS_MARK = 60
 
 // Fixed skill order. Also used to break ties: grammar first, because grammar
 // mistakes carry over into reading, writing and speaking.
@@ -93,6 +98,19 @@ export function getSkillStatus(percent) {
   if (percent >= READY_SKILL) return 'good'
   if (percent >= ALMOST_SKILL) return 'close'
   return 'low'
+}
+
+// WHY: 15 questions is a small sample. One lucky or unlucky answer can move a
+// skill by 10+ points, so a score just above or below a line is not a
+// reliable verdict. We flag it and suggest a retake to confirm.
+// Checks each skill against 70/55 and the overall score against 75/60.
+export function isBorderline(skillScores, overall) {
+  const near = (value, threshold) => Math.abs(value - threshold) <= BORDERLINE_MARGIN
+  const skillNear = SKILLS.some((skill) => {
+    const p = skillScores[skill].percent
+    return near(p, READY_SKILL) || near(p, ALMOST_SKILL)
+  })
+  return skillNear || near(overall, READY_OVERALL) || near(overall, ALMOST_OVERALL)
 }
 
 // WHY: totals per topic are what the topic ranking is built on.
@@ -200,10 +218,12 @@ export function getWarnings(answers, durationMs) {
 export function getResult(data, answers, durationMs) {
   const { questions, topics } = data
   const skills = scoreSkills(questions, answers)
+  const verdict = getVerdict(skills)
 
   return {
     skills,
-    verdict: getVerdict(skills),
+    verdict,
+    borderline: isBorderline(skills, verdict.overall),
     weakTopics: getWeakTopics(questions, answers, topics),
     warnings: getWarnings(answers, durationMs),
     // Per-question details for the "review answers" screen.

@@ -3,7 +3,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { getResult, getSkillStatus } from './scoring.js'
+import { getResult, getSkillStatus, isBorderline } from './scoring.js'
 
 const data = JSON.parse(readFileSync(new URL('../data/questions.json', import.meta.url), 'utf8'))
 const { questions } = data
@@ -91,4 +91,23 @@ test('weak topics report wrong/guessed counts; skill status bands', () => {
   assert.equal(getSkillStatus(70), 'good')
   assert.equal(getSkillStatus(69.9), 'close')
   assert.equal(getSkillStatus(54.9), 'low')
+})
+
+test('borderline flag: within 5 points of a threshold', () => {
+  // Grammar 66.7% is 3.3 points under the 70% ready line -> borderline.
+  const almost = allRight('sure')
+  almost.g1 = wrong('g1')
+  almost.g3 = wrong('g3')
+  assert.equal(getResult(data, almost, FIVE_MINUTES).borderline, true)
+
+  // 100% everywhere is far from every line -> not borderline.
+  assert.equal(getResult(data, allRight('sure'), FIVE_MINUTES).borderline, false)
+
+  // Edges, with skills far from every line except where stated.
+  const skills = (g, r, v) => ({ grammar: { percent: g }, reading: { percent: r }, vocabulary: { percent: v } })
+  assert.equal(isBorderline(skills(90, 90, 90), 90), false)
+  assert.equal(isBorderline(skills(90, 90, 65), 90), true) // skill 5 below 70
+  assert.equal(isBorderline(skills(90, 90, 64.9), 90), false) // 5.1 below 70, 9.9 above 55
+  assert.equal(isBorderline(skills(90, 90, 90), 79), true) // overall 4 above 75
+  assert.equal(isBorderline(skills(40, 40, 40), 40), false)
 })
